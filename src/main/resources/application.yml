@@ -1,0 +1,31 @@
+security:
+  oauth2:
+    client:
+      client-id: fooClientIdPassword
+      client-secret: secret
+      scope: read,write
+      authorizedGrantTypes: password, authorization_code, refresh_token
+      auto-approve-scopes: '.*'     
+
+spring:
+  security:
+    user:
+      password: secret
+  datasource:
+    url: jdbc:postgresql://127.0.0.1:5432/victdb
+    username: postgres
+    password: welcome
+    driver-class-name: org.postgresql.Driver
+    dialect: org.hibernate.dialect.PostgreSQLDialect
+  jpa:
+    properties:
+      jadira.usertype.autoRegisterUserTypes: true
+      generate-ddl: false
+            
+logging:
+  level:
+    org.springframework.security: DEBUG
+    
+server:
+  port: 18081    
+  
