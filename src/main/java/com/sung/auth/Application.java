@@ -108,6 +108,10 @@ public class Application {
 		return source;
 	}	
 	
+	/*
+	 * Unable to find clean way to add deletion of token when user logging out from UI.
+	 * Add URL into resource server to remove a token from repository
+	 */
 	@DeleteMapping("/secret/oauth/token/{token}")
 	public ResponseEntity<Void> revokeToken(@PathVariable String token, Principal principal) throws Exception {
 		//checkResourceOwner(user, principal);
