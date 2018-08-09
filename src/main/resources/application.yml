@@ -1,16 +1,4 @@
-security:
-  oauth2:
-    client:
-      client-id: fooClientIdPassword
-      client-secret: secret
-      scope: read,write
-      authorizedGrantTypes: password, authorization_code, refresh_token
-      auto-approve-scopes: '.*'     
-
 spring:
-  security:
-    user:
-      password: secret
   datasource:
     url: jdbc:postgresql://127.0.0.1:5432/victdb
     username: postgres
@@ -19,6 +7,7 @@ spring:
     dialect: org.hibernate.dialect.PostgreSQLDialect
   jpa:
     properties:
+      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
       jadira.usertype.autoRegisterUserTypes: true
       generate-ddl: false
             

@@ -11,6 +11,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
 
@@ -35,6 +36,14 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 		return new InMemoryTokenStore();
 	}	
 	
+	@Bean
+	public DefaultTokenServices tokenServices(){
+		DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
+		defaultTokenServices.setTokenStore(tokenStore());
+		defaultTokenServices.setSupportRefreshToken(true);
+		return defaultTokenServices;
+	}
+	
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 		clients
@@ -42,8 +51,8 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 			.withClient("openport")
 			.secret(encoder.encode("secret"))
 			.authorizedGrantTypes("password","refresh_token")
-			.scopes("read","write")
-			.accessTokenValiditySeconds(60*60)
+			.scopes("customer")
+			.accessTokenValiditySeconds(60*60*24)
 			.refreshTokenValiditySeconds(60*60*24*7);
 	}
 

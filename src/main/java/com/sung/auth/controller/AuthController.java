@@ -4,6 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,20 +18,24 @@ import com.sung.auth.service.AuthUserDetails;
 import com.sung.auth.service.AuthUserDetailsService;
 
 @RestController
+@RequestMapping("/secret")
 public class AuthController {
 	
 	@Autowired
 	private AuthUserDetailsService userDetailsService;
 	
+	//@PreAuthorize("#oauth2.hasScope('read')")
+	@PreAuthorize("hasRole('ADMIN')")
 	@RequestMapping("/me")
 	public Map<String, Object> user(Authentication authentication){
 		Map<String, Object> map = new LinkedHashMap<>();
-		UserDetails user = (AuthUserDetails)authentication.getPrincipal();
 		map.put("name", authentication.getName());
-		map.put("user", user);		
+		map.put("user", ((AuthUserDetails)authentication.getPrincipal()).getUser());		
 		return map;
-	}	
+	}		
 	
+	//@PreAuthorize("#oauth2.hasScope('write')")
+	@PreAuthorize("hasRole('TEST')")
 	@GetMapping("/user/{username}")
 	public User getUser(String username){
 		return userDetailsService.findOne(username);

@@ -1,5 +1,6 @@
 package com.sung.auth.model;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 @Entity
 @Table(name = "app_user")
-public class User {
+public class User implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -61,14 +62,12 @@ public class User {
     @Column(name = "require_reset_passwd", nullable = false)
     private boolean requireResetPassword = false;    
     
-    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "app_user_role", 
     	joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
     	inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private Set<Role> roles = new HashSet<Role>();
 
-    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "app_user_business_unit",
     	joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
@@ -98,11 +97,11 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
+	
 	public String getPasswordHint() {
 		return passwordHint;
 	}
-
+		
 	public void setPasswordHint(String passwordHint) {
 		this.passwordHint = passwordHint;
 	}
